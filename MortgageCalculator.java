@@ -1,22 +1,34 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 public class MortgageCalculator {
-    private double principal;
-    private double annualInterestRate;
-    private int termInYears;
+    public static void main(String[] args) {
+        double loanAmount = 200000;
+        double annualInterestRate = 0.05;
+        int loanTerm = 30;
+        double downPayment = 20000;
 
+        AmortizationSchedule amortizationSchedule = new AmortizationSchedule(loanAmount, annualInterestRate, loanTerm, downPayment);
+        List<Double> schedule = amortizationSchedule.getSchedule();
 
-    public MortgageCalculator(double principal, double annualInterestRate, int termInYears) {
-        this.principal = principal;
-        this.annualInterestRate = annualInterestRate;
-        this.termInYears = termInYears;
-    }
+        double monthlyPayment = schedule.get(0);
+        System.out.println("Monthly Payment: $" + monthlyPayment);
 
+        amortizationSchedule.sortSchedule();
+        System.out.println("Sorted Amortization Schedule: " + schedule);
 
-    public double calculateMonthlyPayment() {
-        double monthlyInterestRate = this.annualInterestRate / 100 / 12;
-        int totalNumberOfPayments = this.termInYears * 12;
+        double totalInterestPaid = Calculator.calculateTotalInterestPaid(schedule);
+        System.out.println("Total Interest Paid over the Life of the Loan: $" + totalInterestPaid);
 
-
-        return (this.principal * monthlyInterestRate) /
-                (1 - Math.pow(1 + monthlyInterestRate, -totalNumberOfPayments));
+        double targetBalance = 150000;
+        int month = amortizationSchedule.searchSchedule(targetBalance);
+        if (month >= 0) {
+            System.out.println("Found balance $" + targetBalance + " at month " + (month + 1));
+        } else {
+            System.out.println("Balance $" + targetBalance + " not found in the schedule.");
+        }
     }
 }
