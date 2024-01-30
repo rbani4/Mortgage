@@ -149,3 +149,4 @@ class MortgageCalculatorGUI {
     public void setVisible(boolean b) {
     }
 }
+
