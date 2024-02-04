@@ -1,11 +1,25 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class LoginWindow extends JFrame {
+    // Fields for UI components and user state
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
@@ -13,105 +27,103 @@ public class LoginWindow extends JFrame {
     private boolean loggedIn = false;
     private String loggedInUsername;
 
+    // Constructor for the LoginWindow
     public LoginWindow() {
-        setTitle("Mortgage Payment Calculator");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 250);
-        setLocationRelativeTo(null);
-        setResizable(false);
+        // Set up the JFrame
+        this.setTitle("Mortgage Payment Calculator");
+        this.setDefaultCloseOperation(3);
+        this.setSize(400, 250);
+        this.setLocationRelativeTo((Component)null);
+        this.setResizable(false);
 
+        // Create UI components and layout
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-
         JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
         inputPanel.setBackground(new Color(230, 230, 230));
-
         JLabel titleLabel = new JLabel("Mortgage Payment Calculator");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-
+        titleLabel.setFont(new Font("Arial", 1, 18));
+        titleLabel.setHorizontalAlignment(0);
         JLabel usernameLabel = new JLabel("Username:");
-        usernameField = new JTextField();
+        this.usernameField = new JTextField();
         JLabel passwordLabel = new JLabel("Password:");
-        passwordField = new JPasswordField();
-        loginButton = createStyledButton("Login");
-        signupButton = createStyledButton("Signup");
-
+        this.passwordField = new JPasswordField();
+        this.loginButton = this.createStyledButton("Login");
+        this.signupButton = this.createStyledButton("Signup");
         inputPanel.add(usernameLabel);
-        inputPanel.add(usernameField);
+        inputPanel.add(this.usernameField);
         inputPanel.add(passwordLabel);
-        inputPanel.add(passwordField);
-        inputPanel.add(loginButton);
-        inputPanel.add(signupButton);
+        inputPanel.add(this.passwordField);
+        inputPanel.add(this.loginButton);
+        inputPanel.add(this.signupButton);
+        panel.add(titleLabel, "North");
+        panel.add(inputPanel, "Center");
+        this.add(panel);
 
-        panel.add(titleLabel, BorderLayout.NORTH);
-        panel.add(inputPanel, BorderLayout.CENTER);
-
-        add(panel);
-
-        loginButton.addActionListener(new ActionListener() {
-            @Override
+        // Add action listeners and hover effects to buttons
+        this.loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                char[] passwordChars = passwordField.getPassword();
+                // Handle login button click
+                String username = LoginWindow.this.usernameField.getText();
+                char[] passwordChars = LoginWindow.this.passwordField.getPassword();
                 String password = new String(passwordChars);
-
-                if (authenticateUser(username, password)) {
-                    loggedInUsername = username;
-                    loggedIn = true;
-                    openMortgageCalculator();
+                if (LoginWindow.this.authenticateUser(username, password)) {
+                    LoginWindow.this.loggedInUsername = username;
+                    LoginWindow.this.loggedIn = true;
+                    LoginWindow.this.openMortgageCalculator();
                 } else {
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Invalid username or password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginWindow.this, "Invalid username or password.", "Login Error", 0);
                 }
             }
         });
-
-        signupButton.addActionListener(new ActionListener() {
-            @Override
+        this.signupButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                char[] passwordChars = passwordField.getPassword();
+                // Handle signup button click
+                String username = LoginWindow.this.usernameField.getText();
+                char[] passwordChars = LoginWindow.this.passwordField.getPassword();
                 String password = new String(passwordChars);
-
-                if (signupUser(username, password)) {
-                    loggedInUsername = username;
-                    loggedIn = true;
-                    clearFields();
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Account created!", "Signup Success", JOptionPane.INFORMATION_MESSAGE);
+                if (LoginWindow.this.signupUser(username, password)) {
+                    LoginWindow.this.loggedInUsername = username;
+                    LoginWindow.this.loggedIn = true;
+                    LoginWindow.this.clearFields();
+                    JOptionPane.showMessageDialog(LoginWindow.this, "Account created!", "Signup Success", 1);
                 } else {
-                    JOptionPane.showMessageDialog(LoginWindow.this, "Password must be 8 or more characters", "Signup Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginWindow.this, "Password must be 8 or more characters", "Signup Error", 0);
                 }
             }
         });
-
-        addHoverEffect(loginButton);
-        addHoverEffect(signupButton);
+        this.addHoverEffect(this.loginButton);
+        this.addHoverEffect(this.signupButton);
     }
 
+    // Method to authenticate a user
     private boolean authenticateUser(String username, String password) {
         return !username.isEmpty() && password.length() >= 8;
     }
 
+    // Method to sign up a user
     private boolean signupUser(String username, String password) {
         return !username.isEmpty() && password.length() >= 8;
     }
 
+    // Method to open the MortgageCalculatorGUI
     private void openMortgageCalculator() {
-        MortgageCalculatorGUI mortgageCalculator = new MortgageCalculatorGUI(loggedInUsername);
+        MortgageCalculatorGUI mortgageCalculator = new MortgageCalculatorGUI(this.loggedInUsername);
         mortgageCalculator.setVisible(true);
-
-        dispose();
+        this.dispose();
     }
 
+    // Method to clear text fields
     private void clearFields() {
-        usernameField.setText("");
-        passwordField.setText("");
+        this.usernameField.setText("");
+        this.passwordField.setText("");
     }
 
+    // Method to create a styled button
     private JButton createStyledButton(String label) {
         JButton button = new JButton(label);
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(new Font("Arial", 1, 14));
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(50, 150, 50));
         button.setBorderPainted(false);
@@ -120,22 +132,22 @@ public class LoginWindow extends JFrame {
         return button;
     }
 
-    private void addHoverEffect(JButton button) {
+    // Method to add hover effect to a button
+    private void addHoverEffect(final JButton button) {
         button.addMouseListener(new MouseAdapter() {
-            @Override
             public void mouseEntered(MouseEvent e) {
                 button.setBackground(new Color(70, 170, 70));
-                button.setFont(new Font("Arial", Font.BOLD, 15));
+                button.setFont(new Font("Arial", 1, 15));
             }
 
-            @Override
             public void mouseExited(MouseEvent e) {
                 button.setBackground(new Color(50, 150, 50));
-                button.setFont(new Font("Arial", Font.BOLD, 14));
+                button.setFont(new Font("Arial", 1, 14));
             }
         });
     }
 
+    // Main method to run the application
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginWindow loginWindow = new LoginWindow();

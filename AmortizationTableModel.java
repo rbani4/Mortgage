@@ -1,27 +1,31 @@
-import javax.swing.table.AbstractTableModel;
 import java.util.List;
+import javax.swing.table.AbstractTableModel;
 
 public class AmortizationTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"Month", "Payment", "Principal", "Interest", "Remaining Balance"};
+    // Array of column names for the table
+    private final String[] columnNames = new String[]{"Month", "Payment", "Principal", "Interest", "Remaining Balance"};
+
+    // List to store AmortizationEntry objects
     private final List<AmortizationEntry> data;
 
+    // Constructor to initialize the table model with data
     public AmortizationTableModel(List<AmortizationEntry> data) {
         this.data = data;
     }
 
-    @Override
+    // Get the number of rows in the table
     public int getRowCount() {
-        return data.size();
+        return this.data.size();
     }
 
-    @Override
+    // Get the number of columns in the table
     public int getColumnCount() {
-        return columnNames.length;
+        return this.columnNames.length;
     }
 
-    @Override
+    // Get the value at a specific row and column in the table
     public Object getValueAt(int rowIndex, int columnIndex) {
-        AmortizationEntry entry = data.get(rowIndex);
+        AmortizationEntry entry = (AmortizationEntry)this.data.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return entry.getMonth();
@@ -38,8 +42,8 @@ public class AmortizationTableModel extends AbstractTableModel {
         }
     }
 
-    @Override
+    // Get the column name for a specific column index
     public String getColumnName(int column) {
-        return columnNames[column];
+        return this.columnNames[column];
     }
 }
