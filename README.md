@@ -1,2 +1,3 @@
-# Mortgage
-Final project file to store code changes.
+#ICS4U Mortgage Calculator
+
+This is our mortgage calculator for the final summative. The program is, as mentioned, a mortgage calculator used to calculate your mortgage rates and gives you a quote. The target audience (besides our client, our Computer Science teacher) is anyone looking to purchase or lease a home, anyone ages 24-50 pretty much. The calculator was heavily inspired by RBC's mortgage calculator, and it features a login system, a down payment finance option with ammortization periods, and a payment option calculator, (e.g monthly, weekly or biweekly). Coded by Sam and Rosesh, enjoy!
